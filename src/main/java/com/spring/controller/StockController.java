@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.*;
 import com.spring.dto.StockDetailsDTO;
 import com.spring.service.StockService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/stock")
 public class StockController {
@@ -31,4 +33,19 @@ public class StockController {
             );
         }
     }
+    /**
+     * Get All Stocks API:
+     * GET /api/stock
+     */
+    @GetMapping
+    public ResponseEntity<List<StockDetailsDTO>> getAllStocks() {
+        try {
+            List<StockDetailsDTO> stocks = stockService.getAllStocks();
+            return ResponseEntity.ok(stocks);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
+
+
 }

@@ -8,8 +8,7 @@ public class StockDetailsDTO {
     String stockSymbol;
     String stockName;
     Double openPrice;
-    Double closePrice;
+    Double settlementPrice;
     Double highPrice;
     Double lowPrice;
-    Double settlementPrice;
 }

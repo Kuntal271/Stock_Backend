@@ -21,7 +21,6 @@ public class Stock {
     // Basic pricing info
     private Double prevClose;
     private Double openPrice;
-    private Double closePrice;
     private Double highPrice;
     private Double lowPrice;
     private Double hi52Week;

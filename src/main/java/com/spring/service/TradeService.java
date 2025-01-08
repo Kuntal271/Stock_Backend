@@ -39,7 +39,7 @@ public class TradeService {
 
         // Compute price at trade time if not provided (or fallback to closePrice)
         Double tradePrice = request.getPriceAtTradeTime() == null
-                ? stock.getClosePrice() : request.getPriceAtTradeTime();
+                ? stock.getSettlementPrice() : request.getPriceAtTradeTime();
 
         // Create trade record
         Trade trade = Trade.builder()

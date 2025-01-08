@@ -7,6 +7,9 @@ import com.spring.dto.StockDetailsDTO;
 import com.spring.entity.Stock;
 import com.spring.repository.StockRepository;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class StockService {
 
@@ -23,13 +26,25 @@ public class StockService {
         return mapToDTO(stock);
     }
 
+    public List<StockDetailsDTO> getAllStocks() {
+        List<Stock> stocks = stockRepository.findAll();
+
+        if (stocks.isEmpty()) {
+            throw new ExpressionException("No stocks found");
+        }
+
+        return stocks.stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
+    }
+
     private StockDetailsDTO mapToDTO(Stock stock) {
         StockDetailsDTO dto = new StockDetailsDTO();
         dto.setId(stock.getId());
         dto.setStockName(stock.getStockName());
         dto.setStockSymbol(stock.getStockSymbol());
         dto.setOpenPrice(stock.getOpenPrice());
-        dto.setClosePrice(stock.getClosePrice());
+        dto.setSettlementPrice(stock.getSettlementPrice());
         dto.setHighPrice(stock.getHighPrice());
         dto.setLowPrice(stock.getLowPrice());
         dto.setSettlementPrice(stock.getSettlementPrice());

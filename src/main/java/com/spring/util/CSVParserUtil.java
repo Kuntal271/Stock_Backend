@@ -23,14 +23,13 @@ public class CSVParserUtil {
     public List<Stock> parseCsvToStocks(MultipartFile file) throws Exception {
         List<Stock> stockList = new ArrayList<>();
 
-        // Try-with-resources to automatically close the reader
         try (BufferedReader br = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
             // Read and discard the header (optional)
             String headerLine = br.readLine();
 
             String line;
             while ((line = br.readLine()) != null) {
-                String[] tokens = line.split("\\t");
+                String[] tokens = line.split(",");
 
                 if (tokens.length < 14) {
                     continue;  // or throw an exception
@@ -42,13 +41,16 @@ public class CSVParserUtil {
                         .openPrice(Double.parseDouble(tokens[5]))
                         .highPrice(Double.parseDouble(tokens[6]))
                         .lowPrice(Double.parseDouble(tokens[7]))
-                        .closePrice(Double.parseDouble(tokens[8]))
-                         .hi52Week(Double.parseDouble(tokens[12]))
-                         .lo52Week(Double.parseDouble(tokens[13]))
+                        .settlementPrice(Double.parseDouble(tokens[8]))
+                        .hi52Week(Double.parseDouble(tokens[12]))
+                        .lo52Week(Double.parseDouble(tokens[13]))
                         .build();
 
                 stockList.add(stock);
             }
+
+            // Log the size of the stock list
+            System.out.println("Total Stocks Parsed: " + stockList.size());
         }
 
         return stockList;
