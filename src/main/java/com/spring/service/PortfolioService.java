@@ -23,8 +23,8 @@ public class PortfolioService {
         this.stockRepository = stockRepository;
     }
 
-    public List<PortfolioResponseDTO> getUserPortfolio(Long userId) {
-        List<UserHolding> holdings = userHoldingRepository.findByUserId(userId);
+    public List<PortfolioResponseDTO> getUserPortfolio(String userName) {
+        List<UserHolding> holdings = userHoldingRepository.findByUserName(userName);
 
         return holdings.stream()
                 .map(holding -> {

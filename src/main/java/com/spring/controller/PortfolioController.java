@@ -24,8 +24,8 @@ public class PortfolioController {
      * GET /api/portfolio?userId=XYZ
      */
     @GetMapping
-    public ResponseEntity<?> getPortfolio(@RequestParam("userId") Long userId) {
-        List<PortfolioResponseDTO> holdings = portfolioService.getUserPortfolio(userId);
+    public ResponseEntity<?> getPortfolio(@RequestParam("userName") String userName) {
+        List<PortfolioResponseDTO> holdings = portfolioService.getUserPortfolio(userName);
 
         // Calculate total portfolio value, total buy price, total P/L, etc.
         double totalBuyPrice = holdings.stream()

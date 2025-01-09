@@ -7,9 +7,9 @@ import com.spring.entity.UserHolding;
 import java.util.List;
 
 @Repository
-public interface UserHoldingRepository extends JpaRepository<UserHolding, Long> {
+public interface UserHoldingRepository extends JpaRepository<UserHolding, String> {
 
-    List<UserHolding> findByUserId(Long userId);
+    List<UserHolding> findByUserName(String userName);
 
     UserHolding findByUserIdAndStockId(Long userId, Long stockId);
 }

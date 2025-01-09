@@ -10,11 +10,10 @@ import lombok.*;
 @Builder
 public class UserHolding {
 
-    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private Long userId;
+    @Id
+    private Long userName;
     private Long stockId;
     private Integer quantity;         // Net quantity user is holding
     private Double averageBuyPrice;   // Weighted average of buy price
