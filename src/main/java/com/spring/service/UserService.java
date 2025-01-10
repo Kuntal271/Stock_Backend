@@ -25,12 +25,11 @@ public class UserService {
         User user = new User();
         user.setUserName(createUserRequest.getUserName());
         user.setEmail(createUserRequest.getEmail());
-        User savedUser = userRepository.save(user);
+        userRepository.save(user);
 
         List<PortfolioResponseDTO> holdings = createUserRequest.getHoldings();
         for (PortfolioResponseDTO holding : holdings) {
             UserHolding portfolio = new UserHolding();
-            portfolio.setUserId(savedUser.getId());
             portfolio.setStockId(holding.getStockId());
             portfolio.setQuantity(holding.getQuantity());
             portfolio.setAverageBuyPrice(holding.getBuyPrice());

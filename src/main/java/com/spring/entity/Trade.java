@@ -14,7 +14,7 @@ public class Trade {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long userAccountId;
+    private String userName;
     private Long stockId;
     private String tradeType;  // “BUY” or “SELL”
     private Integer quantity;

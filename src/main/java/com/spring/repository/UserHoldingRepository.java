@@ -11,5 +11,5 @@ public interface UserHoldingRepository extends JpaRepository<UserHolding, String
 
     List<UserHolding> findByUserName(String userName);
 
-    UserHolding findByUserIdAndStockId(Long userId, Long stockId);
+    UserHolding findByUserNameAndStockId(String userName, Long stockId);
 }

@@ -43,7 +43,7 @@ public class TradeService {
 
         // Create trade record
         Trade trade = Trade.builder()
-                .userAccountId(request.getUserAccountId())
+                .userName(request.getUserName())
                 .stockId(stock.getId())
                 .tradeType(request.getTradeType().toUpperCase())
                 .quantity(request.getQuantity())
@@ -53,13 +53,13 @@ public class TradeService {
 
         // Update user holdings
         UserHolding holding = userHoldingRepository
-                .findByUserIdAndStockId(request.getUserAccountId(), stock.getId());
+                .findByUserNameAndStockId(request.getUserName(), stock.getId());
 
         if ("BUY".equalsIgnoreCase(request.getTradeType())) {
             if (holding == null) {
                 // Create new holding
                 holding = UserHolding.builder()
-                        .userId(request.getUserAccountId())
+                        .userName(request.getUserName())
                         .stockId(stock.getId())
                         .quantity(request.getQuantity())
                         .averageBuyPrice(tradePrice)
