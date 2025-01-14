@@ -16,6 +16,7 @@ public class Stock {
     private Long id;
 
     private String stockSymbol;        // e.g. “TCS”
+
     private String stockName;          // e.g. “Tata Consultancy Services”
 
     // Basic pricing info

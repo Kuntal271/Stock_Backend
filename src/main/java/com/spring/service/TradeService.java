@@ -1,5 +1,6 @@
 package com.spring.service;
 
+import com.spring.entity.TradeType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,7 +46,7 @@ public class TradeService {
         Trade trade = Trade.builder()
                 .userName(request.getUserName())
                 .stockId(stock.getId())
-                .tradeType(request.getTradeType().toUpperCase())
+                .tradeType(request.getTradeType())
                 .quantity(request.getQuantity())
                 .priceAtTradeTime(tradePrice)
                 .build();
@@ -55,9 +56,8 @@ public class TradeService {
         UserHolding holding = userHoldingRepository
                 .findByUserNameAndStockId(request.getUserName(), stock.getId());
 
-        if ("BUY".equalsIgnoreCase(request.getTradeType())) {
+        if (request.getTradeType() == TradeType.BUY) {
             if (holding == null) {
-                // Create new holding
                 holding = UserHolding.builder()
                         .userName(request.getUserName())
                         .stockId(stock.getId())
@@ -77,7 +77,7 @@ public class TradeService {
             }
             userHoldingRepository.save(holding);
 
-        } else if ("SELL".equalsIgnoreCase(request.getTradeType())) {
+        } else if (request.getTradeType() == TradeType.SELL) {
             if (holding == null || holding.getQuantity() < request.getQuantity()) {
                 throw new Exception("Insufficient quantity to sell");
             }

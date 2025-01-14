@@ -40,14 +40,20 @@ public class StockService {
 
     private StockDetailsDTO mapToDTO(Stock stock) {
         StockDetailsDTO dto = new StockDetailsDTO();
-        dto.setId(stock.getId());
-        dto.setStockName(stock.getStockName());
-        dto.setStockSymbol(stock.getStockSymbol());
-        dto.setOpenPrice(stock.getOpenPrice());
-        dto.setSettlementPrice(stock.getSettlementPrice());
-        dto.setHighPrice(stock.getHighPrice());
-        dto.setLowPrice(stock.getLowPrice());
-        dto.setSettlementPrice(stock.getSettlementPrice());
-        return dto;
+       dto.setId(stock.getId());
+       dto.setStockName(stock.getStockName());
+       dto.setStockSymbol(stock.getStockSymbol());
+       dto.setSettlementPrice(stock.getSettlementPrice());
+       dto.setLowPrice(stock.getLowPrice());
+       dto.setHighPrice(stock.getHighPrice());
+       dto.setSettlementPrice(stock.getSettlementPrice());
+       return dto;
+    }
+
+    public List<StockDetailsDTO> searchByName(String stockName){
+        List<Stock> stocks = stockRepository.searchByNameFuzzy(stockName);
+        return stocks.stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
     }
 }
