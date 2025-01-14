@@ -1,5 +1,6 @@
 package com.spring.controller;
 
+import com.spring.producer.TradeProducer;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,10 +11,10 @@ import com.spring.service.TradeService;
 @RequestMapping("/api/trade")
 public class TradeController {
 
-    private final TradeService tradeService;
+    private final TradeProducer tradeProducer;
 
-    public TradeController(TradeService tradeService) {
-        this.tradeService = tradeService;
+    public TradeController(TradeProducer tradeProducer) {
+        this.tradeProducer = tradeProducer;
     }
 
     /**
@@ -23,9 +24,9 @@ public class TradeController {
     @PostMapping
     public ResponseEntity<?> executeTrade(@RequestBody TradeRequestDTO tradeRequest) {
         try {
-            String result = tradeService.executeTrade(tradeRequest);
+            tradeProducer.sendTradeRequest(tradeRequest);
             return ResponseEntity.ok().body(
-                    "{ \"status\": \"Success\", \"message\": \"" + result + "\"}"
+                    "{ \"status\": \"Success\", \"message\": \"" + "Trade successful " + "\"}"
             );
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(

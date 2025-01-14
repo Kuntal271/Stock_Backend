@@ -111,4 +111,32 @@ This application is a **Portfolio Management API** designed for managing trades,
     }
   ]
 }
+```
+## 3. UML Diagrams
+
+### UML Class Diagram
+![UML Class Diagram](assets/uml.png)
+
+This diagram illustrates the relationships and attributes of the key entities within the application, such as `Stock`, `User`, `Trade`, and `UserHolding`.
+
+---
+
+### Sequence Diagram - User Portfolio
+![Sequence Diagram - User Portfolio](assets/sequence_portfolio.png)
+
+This sequence diagram demonstrates the interactions between components when a user requests their portfolio, showing the flow of data and processing from the API to the database.
+
+---
+
+### Sequence Diagram - Trade
+![Sequence Diagram - Trade](assets/sequence_trade.png)
+
+This sequence diagram represents the flow of a trade transaction, including the interaction with the `TradeProducer` and the message queue.
+
+---
+
+### Sequence Diagram - Stock Update
+![Sequence Diagram - Trade](assets/sequence_stock.png)
+
+This sequence diagram represents the flow of a stocks transaction, including the interaction with the `stocks` and the `user`.
 
