@@ -10,4 +10,5 @@ public class TradeRequestDTO {
     private Integer quantity;
     private Long stockId;
     private Double priceAtTradeTime;
+    private boolean isLeveraged;
 }

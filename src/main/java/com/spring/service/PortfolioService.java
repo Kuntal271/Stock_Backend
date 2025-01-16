@@ -31,8 +31,8 @@ public class PortfolioService {
                     Stock stock = stockRepository.findById(holding.getStockId()).orElse(null);
                     if (stock == null) return null;
 
-                    double currentPrice = stock.getSettlementPrice();
-                    double buyPrice = holding.getAverageBuyPrice();
+                    double currentPrice = stock.getCurrentPrice();
+                    double buyPrice = holding.getBuyPrice();
                     double gainLoss = currentPrice - buyPrice;
                     double gainLossPercent = (buyPrice == 0.0) ? 0.0 : (gainLoss / buyPrice * 100);
 

@@ -25,6 +25,8 @@ public class UserService {
         User user = new User();
         user.setUserName(createUserRequest.getUserName());
         user.setEmail(createUserRequest.getEmail());
+        user.setTotalBalance(createUserRequest.getTotalBalance());
+        user.setLeveragedBalance(0.0);
         userRepository.save(user);
         if (createUserRequest.getHoldings() == null)
             return;
@@ -34,7 +36,7 @@ public class UserService {
             portfolio.setUserName(user.getUserName());
             portfolio.setStockId(holding.getStockId());
             portfolio.setQuantity(holding.getQuantity());
-            portfolio.setAverageBuyPrice(holding.getBuyPrice());
+            portfolio.setBuyPrice(holding.getBuyPrice());
             userPortfolioRepository.save(portfolio);
         }
     }

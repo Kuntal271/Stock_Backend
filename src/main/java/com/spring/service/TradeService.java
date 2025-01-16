@@ -1,34 +1,44 @@
 package com.spring.service;
 
 import com.spring.entity.TradeType;
+import com.spring.repository.UserRepository;
+import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.dto.TradeRequestDTO;
 import com.spring.entity.Stock;
 import com.spring.entity.Trade;
+import com.spring.entity.User;
 import com.spring.entity.UserHolding;
 import com.spring.repository.StockRepository;
 import com.spring.repository.TradeRepository;
 import com.spring.repository.UserHoldingRepository;
 
+@CommonsLog
 @Service
 public class TradeService {
 
     private final TradeRepository tradeRepository;
     private final StockRepository stockRepository;
     private final UserHoldingRepository userHoldingRepository;
+    private final UserRepository userRepository;
 
     public TradeService(TradeRepository tradeRepository,
                         StockRepository stockRepository,
-                        UserHoldingRepository userHoldingRepository) {
+                        UserHoldingRepository userHoldingRepository,
+                        UserRepository userRepository) {
         this.tradeRepository = tradeRepository;
         this.stockRepository = stockRepository;
         this.userHoldingRepository = userHoldingRepository;
+        this.userRepository = userRepository;
     }
 
     @Transactional
-    public String executeTrade(TradeRequestDTO request) throws Exception, Exception {
+    public void executeTrade(TradeRequestDTO request) throws Exception, Exception {
+
+        // TODO
+        // Introduce leverage to execute trade and square off by EOD
         // Validate stock
         Stock stock = stockRepository.findById(request.getStockId())
                 .orElseThrow(() -> new Exception("Stock not found"));
@@ -37,10 +47,27 @@ public class TradeService {
         if (request.getQuantity() <= 0) {
             throw new Exception("Quantity must be greater than zero.");
         }
+        if(request.isLeveraged()){
+            if(request.getTradeType()==TradeType.SELL){
+                UserHolding userHolding =  userHoldingRepository.findByUserNameAndStockId(request.getUserName(), request.getStockId());
+                if(userHolding.getQuantity() == 0)
+                    throw new Exception("Short selling not possible");
 
+            }
+           User user = userRepository.findByUserName(request.getUserName());
+           if(user.getTotalBalance() > request.getQuantity() * request.getPriceAtTradeTime())
+               throw new Exception("Balance is sufficient to trade set isLeveraged to false");
+
+           if (request.getTradeType() == TradeType.BUY) {
+                user.setLeveragedBalance(user.getLeveragedBalance() + request.getQuantity() * request.getPriceAtTradeTime());
+           } else {
+                user.setLeveragedBalance(user.getLeveragedBalance() - request.getQuantity() * request.getPriceAtTradeTime());
+           }
+           userRepository.save(user);
+        }
         // Compute price at trade time if not provided (or fallback to closePrice)
         Double tradePrice = request.getPriceAtTradeTime() == null
-                ? stock.getSettlementPrice() : request.getPriceAtTradeTime();
+                ? stock.getCurrentPrice() : request.getPriceAtTradeTime();
 
         // Create trade record
         Trade trade = Trade.builder()
@@ -62,18 +89,18 @@ public class TradeService {
                         .userName(request.getUserName())
                         .stockId(stock.getId())
                         .quantity(request.getQuantity())
-                        .averageBuyPrice(tradePrice)
+                        .buyPrice(tradePrice)
                         .build();
             } else {
                 // Update existing holding
                 Integer totalQuantity = holding.getQuantity() + request.getQuantity();
                 // Weighted average
-                double totalCost = holding.getAverageBuyPrice() * holding.getQuantity()
+                double totalCost = holding.getBuyPrice() * holding.getQuantity()
                         + tradePrice * request.getQuantity();
                 double newAvgPrice = totalCost / totalQuantity;
 
                 holding.setQuantity(totalQuantity);
-                holding.setAverageBuyPrice(newAvgPrice);
+                holding.setBuyPrice(newAvgPrice);
             }
             userHoldingRepository.save(holding);
 
@@ -87,13 +114,30 @@ public class TradeService {
 
             // If quantity becomes 0, you can choose to remove the record or keep with zero quantity
             if (updatedQuantity == 0) {
-                holding.setAverageBuyPrice(0.0);
+                userHoldingRepository.delete(holding);
             }
             userHoldingRepository.save(holding);
         } else {
             throw new Exception("Invalid trade type. Allowed values: BUY or SELL");
         }
 
-        return "Trade executed successfully";
+    }
+
+    public void closeMarket() {
+        // TODO
+        // Square off all open positions
+
+        for(UserHolding holding : userHoldingRepository.findAll()){
+            Stock stock = stockRepository.findById(holding.getStockId()).get();
+            User user = userRepository.findByUserName(holding.getUserName());
+            if(holding.getQuantity() > 0) {
+                user.setLeveragedBalance(0.0);
+                double pnl = (stock.getCurrentPrice() - holding.getBuyPrice()) * holding.getQuantity();
+                user.setTotalBalance(user.getTotalBalance() + 1.1 * pnl);
+                userHoldingRepository.delete(holding);
+                userRepository.save(user);
+            }
+        }
+
     }
 }

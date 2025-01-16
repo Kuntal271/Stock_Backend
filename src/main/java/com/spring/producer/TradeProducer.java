@@ -15,4 +15,5 @@ public class TradeProducer {
     public void sendTradeRequest(TradeRequestDTO tradeRequest) {
         kafkaTemplate.send("new-trade", tradeRequest);
     }
+
 }

@@ -16,5 +16,5 @@ public class UserHolding {
     private String userName;
     private Long stockId;
     private Integer quantity;
-    private Double averageBuyPrice;
+    private Double buyPrice;
 }

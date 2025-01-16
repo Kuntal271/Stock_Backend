@@ -26,5 +26,5 @@ public class Stock {
     private Double lowPrice;
     private Double hi52Week;
     private Double lo52Week;
-    private Double settlementPrice;
+    private Double currentPrice;
 }

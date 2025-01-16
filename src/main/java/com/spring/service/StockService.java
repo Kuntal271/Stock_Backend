@@ -43,10 +43,9 @@ public class StockService {
        dto.setId(stock.getId());
        dto.setStockName(stock.getStockName());
        dto.setStockSymbol(stock.getStockSymbol());
-       dto.setSettlementPrice(stock.getSettlementPrice());
+       dto.setCurrentPrice(stock.getCurrentPrice());
        dto.setLowPrice(stock.getLowPrice());
        dto.setHighPrice(stock.getHighPrice());
-       dto.setSettlementPrice(stock.getSettlementPrice());
        return dto;
     }
 

@@ -41,7 +41,7 @@ public class CSVParserUtil {
                         .openPrice(Double.parseDouble(tokens[5]))
                         .highPrice(Double.parseDouble(tokens[6]))
                         .lowPrice(Double.parseDouble(tokens[7]))
-                        .settlementPrice(Double.parseDouble(tokens[8]))
+                        .currentPrice(Double.parseDouble(tokens[8]))
                         .hi52Week(Double.parseDouble(tokens[12]))
                         .lo52Week(Double.parseDouble(tokens[13]))
                         .build();

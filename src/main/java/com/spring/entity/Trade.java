@@ -26,4 +26,5 @@ public class Trade {
     @NotNull
     @DecimalMin(value = "0.01", message = "Price must be greater than 0")
     private Double priceAtTradeTime;
+    private boolean isLeveraged;
 }
