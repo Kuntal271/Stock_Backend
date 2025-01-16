@@ -8,4 +8,4 @@ FROM openjdk:18-slim
 WORKDIR /app
 COPY --from=build /build/target/*.jar app.jar
 EXPOSE 8081
-ENTRYPOINT ["java", "-jar", "app.jar"]s
+ENTRYPOINT ["java", "-jar", "app.jar"]
