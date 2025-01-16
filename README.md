@@ -19,14 +19,38 @@ This application is a **Portfolio Management API** designed for managing trades,
 `/api`
 
 ### Endpoints
+### User APIs
 
-| HTTP Method | Endpoint                    | Description                     |
-|-------------|-----------------------------|---------------------------------|
-| GET         | `/api/stocks`              | Fetch all stocks.              |
-| POST        | `/api/trades`              | Create a new trade.            |
-| GET         | `/api/portfolio/{userName}`| Get user portfolio by username.|
-| POST        | `/api/users`               | Create a new user.             |
+| **HTTP Method** | **Endpoint**                | **Description**                               |
+|------------------|-----------------------------|-----------------------------------------------|
+| **POST**         | `/api/user`                | Create a new user with an initial portfolio.  |
 
+### Portfolio APIs
+
+| **HTTP Method** | **Endpoint**                | **Description**                               |
+|------------------|-----------------------------|-----------------------------------------------|
+| **GET**          | `/api/portfolio`           | Get portfolio details for a user.            |
+
+### Stock APIs
+
+| **HTTP Method** | **Endpoint**                | **Description**                               |
+|------------------|-----------------------------|-----------------------------------------------|
+| **GET**          | `/api/stock/{stockId}`     | Get stock details by ID.                     |
+| **GET**          | `/api/stock`              | Retrieve all available stocks.               |
+| **GET**          | `/api/stock/search`       | Search stocks by name.                       |
+
+### Trade APIs
+
+| **HTTP Method** | **Endpoint**                | **Description**                               |
+|------------------|-----------------------------|-----------------------------------------------|
+| **POST**         | `/api/trade`              | Execute a trade (buy/sell).                  |
+| **POST**         | `/api/trade/close-market` | Close the stock market.                      |
+
+### Update Stocks APIs
+
+| **HTTP Method** | **Endpoint**                | **Description**                               |
+|------------------|-----------------------------|-----------------------------------------------|
+| **POST**         | `/api/stocks/update`      | Update stocks data from a CSV file.          |
 ### Example Requests and Responses
 
 #### Fetch All Stocks
