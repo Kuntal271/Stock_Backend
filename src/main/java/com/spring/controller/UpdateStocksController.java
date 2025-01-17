@@ -1,21 +1,19 @@
 package com.spring.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.spring.service.UpdateStocksService;
+import com.spring.service.impl.UpdateStocksServiceImpl;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/stocks")
 public class UpdateStocksController {
 
-    private final UpdateStocksService updateStocksService;
-
-    public UpdateStocksController(UpdateStocksService updateStocksService) {
-        this.updateStocksService = updateStocksService;
-    }
+    private final UpdateStocksServiceImpl updateStocksServiceImpl;
 
     /**
      * Housekeeping API to update stocks data from CSV
@@ -24,7 +22,7 @@ public class UpdateStocksController {
     @PostMapping("/update")
     public ResponseEntity<?> updateStocks(@RequestParam("file") MultipartFile file) {
         try {
-            updateStocksService.updateStocksFromCSV(file);
+            updateStocksServiceImpl.updateStocksFromCSV(file);
             return ResponseEntity.ok("{\"message\": \"Stocks updated successfully\"}");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(

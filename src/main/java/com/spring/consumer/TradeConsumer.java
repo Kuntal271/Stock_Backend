@@ -1,19 +1,17 @@
 package com.spring.consumer;
 
 import com.spring.dto.TradeRequestDTO;
-import com.spring.service.TradeService;
-import org.apache.kafka.clients.consumer.ConsumerRecord;
+import com.spring.service.impl.TradeServiceImpl;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Service;
 
 @Service
 public class TradeConsumer {
 
-    private final TradeService tradeService;
+    private final TradeServiceImpl tradeService;
 
-    public TradeConsumer(TradeService tradeService) {
-        this.tradeService = tradeService;
+    public TradeConsumer(TradeServiceImpl tradeServiceImpl) {
+        this.tradeService = tradeServiceImpl;
     }
 
     @KafkaListener(topics = "new-trade", groupId = "trade-group")

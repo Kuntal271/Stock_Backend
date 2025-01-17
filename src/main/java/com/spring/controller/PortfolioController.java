@@ -1,23 +1,21 @@
 package com.spring.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 
 import com.spring.dto.PortfolioResponseDTO;
-import com.spring.service.PortfolioService;
+import com.spring.service.impl.PortfolioServiceImpl;
 import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/portfolio")
 public class PortfolioController {
 
-    private final PortfolioService portfolioService;
-
-    public PortfolioController(PortfolioService portfolioService) {
-        this.portfolioService = portfolioService;
-    }
+    private final PortfolioServiceImpl portfolioServiceImpl;
 
     /**
      * Portfolio API:
@@ -25,7 +23,7 @@ public class PortfolioController {
      */
     @GetMapping
     public ResponseEntity<?> getPortfolio(@RequestParam("userName") String userName) {
-        List<PortfolioResponseDTO> holdings = portfolioService.getUserPortfolio(userName);
+        List<PortfolioResponseDTO> holdings = portfolioServiceImpl.getUserPortfolio(userName);
 
         // Calculate total portfolio value, total buy price, total P/L, etc.
         double totalBuyPrice = holdings.stream()

@@ -4,6 +4,7 @@ import com.spring.dto.CreateUserRequestDTO;
 import com.spring.dto.PortfolioResponseDTO;
 import com.spring.entity.User;
 import com.spring.repository.UserRepository;
+import com.spring.service.impl.UserServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +19,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class UserServiceTest {
+class UserServiceImplTest {
 
     @Mock
     private UserRepository userRepository;
 
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userServiceImpl;
 
     @Test
     void testCreateUserWithPortfolio() {
@@ -41,7 +42,7 @@ class UserServiceTest {
         User user = new User(1L, "JohnDoe", "john.doe@example.com");
         when(userRepository.save(any(User.class))).thenReturn(user);
 
-        userService.createUserWithPortfolio(request);
+        userServiceImpl.createUserWithPortfolio(request);
 
         assertNotNull(user);
         assertEquals("JohnDoe", user.getUserName());
